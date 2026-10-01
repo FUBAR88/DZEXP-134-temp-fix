@@ -8,7 +8,7 @@ List a relative path from the server folder, keep the names in memory, and load 
 
 ## Demo
 
-[Sample.mp4](Sample.mp4)
+<video src="https://github.com/FUBAR88/DZEXP-134-temp-fix/releases/download/demo/Sample.mp4" width="100%" controls playsinline></video>
 
 ## What was tested
 
