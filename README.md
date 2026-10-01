@@ -6,9 +6,6 @@ Temporary workaround for [DZEXP-134](https://report.bistudio.com/issues/DZEXP-13
 
 List a relative path from the server folder, keep the names in memory, and load each file through `$profile:`. The snippet below is the whole fix. Copy it into your mod. Nothing outside the PBO is required.
 
-## Demo
-
-<video src="https://github.com/FUBAR88/DZEXP-134-temp-fix/releases/download/demo/Sample.mp4" width="100%" controls playsinline></video>
 
 ## What was tested
 
