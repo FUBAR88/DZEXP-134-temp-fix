@@ -6,7 +6,6 @@ Temporary workaround for [DZEXP-134](https://report.bistudio.com/issues/DZEXP-13
 
 List a relative path from the server folder, keep the names in memory, and load each file through `$profile:`. The snippet below is the whole fix. Copy it into your mod. Nothing outside the PBO is required.
 
-
 ## What was tested
 
 Server start used `-profiles=./profiles`. The profiles folder sits inside the server directory. A live 1.30 Experimental server produced this:
