@@ -131,39 +131,21 @@ class IRE_ConfigLoader
 			Print("[ItemRenamerEXP] Config.json saved");
 	}
 
-	static string TrimTrailingSlash(string path)
-	{
-		string trimmed;
-		string last;
-
-		trimmed = path;
-		trimmed.TrimInPlace();
-		trimmed.Replace("\\", "/");
-		while (trimmed.Length() > 0)
-		{
-			last = trimmed.Substring(trimmed.Length() - 1, 1);
-			if (last != "/")
-			{
-				break;
-			}
-			trimmed = trimmed.Substring(0, trimmed.Length() - 1);
-		}
-		return trimmed;
-	}
-
-	static bool RunFindFile(string pattern, out array<string> names, bool jsonOnly)
+	static bool ListAtItems(string suffix, out array<string> names, bool jsonOnly)
 	{
 		string fileName;
+		string pattern;
 		FileAttr fileAttr;
 		FindFileHandle handle;
 		bool found;
 
 		names = new array<string>;
-		Print("[ItemRenamerEXP] FindFile " + pattern);
-		handle = FindFile(pattern, fileName, fileAttr, FindFileFlags.ALL);
+		pattern = IRE_Constants.ITEMS_LIST_ROOT + suffix;
+		Print("[ItemRenamerEXP] FindFileEx " + pattern);
+		handle = CF.FindFileEx(pattern, fileName, fileAttr, FindFileFlags.ALL);
 		if (!handle)
 		{
-			Print("[ItemRenamerEXP] FindFile no handle");
+			Print("[ItemRenamerEXP] FindFileEx no handle");
 			return false;
 		}
 
@@ -181,39 +163,8 @@ class IRE_ConfigLoader
 		}
 
 		CloseFindFile(handle);
-		Print("[ItemRenamerEXP] FindFile count " + names.Count().ToString());
+		Print("[ItemRenamerEXP] FindFileEx count " + names.Count().ToString());
 		return names.Count() > 0;
-	}
-
-	static bool ListAtItems(string suffix, out array<string> names, bool jsonOnly)
-	{
-		string cliProfiles;
-		string stem;
-		string pattern;
-		bool listed;
-
-		names = new array<string>;
-		listed = false;
-		stem = IRE_Constants.ITEMS_RELATIVE + suffix;
-		cliProfiles = "";
-		if (GetCLIParam("profiles", cliProfiles))
-		{
-			cliProfiles = TrimTrailingSlash(cliProfiles);
-			pattern = cliProfiles + stem;
-			listed = RunFindFile(pattern, names, jsonOnly);
-			if (!listed && cliProfiles.IndexOf("./") == 0 && cliProfiles.Length() > 2)
-			{
-				pattern = cliProfiles.Substring(2, cliProfiles.Length() - 2) + stem;
-				listed = RunFindFile(pattern, names, jsonOnly);
-			}
-		}
-
-		if (!listed)
-		{
-			listed = RunFindFile("$profile:ItemRenamerEXP/Items/" + suffix, names, jsonOnly);
-		}
-
-		return listed;
 	}
 
 	static bool CollectItemFileNames(out array<string> names)
@@ -240,7 +191,7 @@ class IRE_ConfigLoader
 			if (IsJsonFileName(topName))
 			{
 				names.Insert(topName);
-				Print("[ItemRenamerEXP] FindFile hit " + topName);
+				Print("[ItemRenamerEXP] FindFileEx hit " + topName);
 				continue;
 			}
 
@@ -254,7 +205,7 @@ class IRE_ConfigLoader
 			{
 				relativeName = topName + "/" + jsonNames.Get(j);
 				names.Insert(relativeName);
-				Print("[ItemRenamerEXP] FindFile hit " + relativeName);
+				Print("[ItemRenamerEXP] FindFileEx hit " + relativeName);
 			}
 		}
 
